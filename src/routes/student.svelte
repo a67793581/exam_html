@@ -2,18 +2,22 @@
     <title>学生主页</title>
 </svelte:head>
 <script>
-    let is_student = true;
 
-    async function test(e) {
-        e.preventDefault();
-        const res = await fetch(`http://exam.cn/api/test`, {method: 'GET', mode: 'cors'});
+    let promise;
+
+    async function test() {
+        const res = await fetch(`http://exam.cn/api/test_mysql`, {method: 'GET', mode: 'cors'});
         const data = await res.json();
         if (res.status === 200) {
-            console.log(data);
-            return {post: data};
+            return data;
         } else {
-            this.error(res.status, data.message);
+            throw new Error(data);
         }
+    }
+
+    function handleClick(e) {
+        e.preventDefault();
+        promise = test();
     }
 
 </script>
@@ -22,7 +26,24 @@
         <label>
             <input type="text" placeholder="请输入考试唯一编号"/>
         </label>
-        <button on:click={test}>查询成绩</button>
+        <button on:click={handleClick}>查询成绩</button>
     </form>
+    {#if promise}
+        <div>
+            {#await promise}
+                <p>...加载中</p>
+            {:then promise}
+                <ul>
+                    <li>
+                        {promise.name}
+                    </li>
+                </ul>
+            {:catch error}
+                <p style="color: red">{error.message}</p>
+            {/await}
+        </div>
+    {/if}
+
+
 </div>
 
