@@ -18,7 +18,7 @@
     <span class="百分之50">
         <a href="student" class="居中">
             <div>
-                <div class="居中"><img src="svg/icon/学生.svg"/></div>
+                <div class="居中"><img alt="学生" src="svg/icon/学生.svg"/></div>
                 <div class="居中"><h1>我是学生</h1></div>
             </div>
         </a>
@@ -26,7 +26,7 @@
     <span class="百分之50">
         <a href="teacher" class="居中">
             <div>
-                <div class="居中"><img src="svg/icon/老师.svg"/></div>
+                <div class="居中"><img alt="老师" src="svg/icon/老师.svg"/></div>
                 <div class="居中"><h1>我是老师</h1></div>
             </div>
         </a>
