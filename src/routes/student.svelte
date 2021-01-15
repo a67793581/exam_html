@@ -1,5 +1,5 @@
 <svelte:head>
-    <title>学生</title>
+    <title>学生主页</title>
 </svelte:head>
 <script>
     let is_student = true;

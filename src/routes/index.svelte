@@ -13,6 +13,7 @@
         width: 50%
     }
 </style>
+<h1 class="居中">考试报名数据处理系统</h1>
 <div class="居中">
     <span class="百分之50">
         <a href="student" class="居中">
