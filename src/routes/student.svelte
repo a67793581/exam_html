@@ -6,7 +6,7 @@
     let promise;
 
     async function test() {
-        const res = await fetch(`http://exam.cn/api/test_mysql`, {method: 'GET', mode: 'cors'});
+        const res = await fetch(`http://exam.cn/api/exam_record/details`, {method: 'GET', mode: 'cors'});
         const data = await res.json();
         if (res.status === 200) {
             return data;
@@ -34,8 +34,29 @@
                 <p>...加载中</p>
             {:then promise}
                 <ul>
+                    <!--
+Achievement: 0
+Code: ""
+CourseID: 0
+CreatedAt: 1610706333
+DeletedAt: null
+ExamTime: 0
+ID: 1
+Key: "test"
+StudentID: 0
+UpdatedAt: 1610706333
+                    -->
                     <li>
-                        {promise.name}
+                        考试编号：{promise.Key}
+                    </li>
+                    <li>
+                        考试时间：{new Date(promise.ExamTime*1000).toLocaleString()}
+                    </li>
+                    <li>
+                        成绩：{promise.Achievement}
+                    </li>
+                    <li>
+                        考试批次：{promise.Code}
                     </li>
                 </ul>
             {:catch error}
