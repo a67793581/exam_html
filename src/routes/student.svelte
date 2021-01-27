@@ -5,11 +5,43 @@
 
     let promise;
 
+    let key;
+
     async function test() {
-        const res = await fetch(`http://exam.cn/api/exam_record/details`, {method: 'GET', mode: 'cors'});
+        // const res = await fetch(`http://exam.cn/api/exam_record/details`, {method: 'GET', mode: 'cors'});
+        const res = await fetch(`http://exam.cn/api/graphql/student`, {
+            method: 'POST',
+            mode: 'cors',
+            body:JSON.stringify({
+                'variables' : null,
+                'operationName' : null,
+                'query' : `
+    {
+      examRecord(key:"${key}") {
+        id
+        course_id
+        student_id
+        code
+        key
+        exam_time
+        achievement
+        student(id:10) {
+          id
+          name
+          key
+        }
+        course (id:1){
+          id
+          name
+        }
+      }
+    }
+                `
+            })
+        });
         const data = await res.json();
         if (res.status === 200) {
-            return data;
+            return data.data;
         } else {
             throw new Error(data);
         }
@@ -24,7 +56,7 @@
 <div>
     <form>
         <label>
-            <input type="text" placeholder="请输入考试唯一编号"/>
+            <input type="text"  bind:value={key} placeholder="请输入考试唯一编号"/>
         </label>
         <button on:click={handleClick}>查询成绩</button>
     </form>
@@ -34,29 +66,23 @@
                 <p>...加载中</p>
             {:then promise}
                 <ul>
-                    <!--
-Achievement: 0
-Code: ""
-CourseID: 0
-CreatedAt: 1610706333
-DeletedAt: null
-ExamTime: 0
-ID: 1
-Key: "test"
-StudentID: 0
-UpdatedAt: 1610706333
-                    -->
                     <li>
-                        考试编号：{promise.Key}
+                        考试编号：{promise.examRecord.key}
                     </li>
                     <li>
-                        考试时间：{new Date(promise.ExamTime*1000).toLocaleString()}
+                        考试时间：{new Date(promise.examRecord.exam_time*1000).toLocaleString()}
                     </li>
                     <li>
-                        成绩：{promise.Achievement}
+                        成绩：{promise.examRecord.achievement}
                     </li>
                     <li>
-                        考试批次：{promise.Code}
+                        考试批次：{promise.examRecord.code}
+                    </li>
+                    <li>
+                        课程名称：{promise.examRecord.course.name}
+                    </li>
+                    <li>
+                        学生姓名：{promise.examRecord.student.name}
                     </li>
                 </ul>
             {:catch error}
