@@ -15,22 +15,7 @@
                 'query': `
     {
       examRecord(key:"${key}") {
-        id
-        course_id
-        student_id
-        code
         key
-        exam_time
-        achievement
-        student(id:10) {
-          id
-          name
-          key
-        }
-        course (id:1){
-          id
-          name
-        }
       }
     }
                 `
@@ -70,21 +55,6 @@
             <ul>
                 <li>
                     考试编号：{promise.examRecord.key}
-                </li>
-                <li>
-                    考试时间：{new Date(promise.examRecord.exam_time * 1000).toLocaleString()}
-                </li>
-                <li>
-                    成绩：{promise.examRecord.achievement}
-                </li>
-                <li>
-                    考试批次：{promise.examRecord.code}
-                </li>
-                <li>
-                    课程名称：{promise.examRecord.course.name}
-                </li>
-                <li>
-                    学生姓名：{promise.examRecord.student.name}
                 </li>
             </ul>
         {:catch error}
