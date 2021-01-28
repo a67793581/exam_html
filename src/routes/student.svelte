@@ -12,10 +12,10 @@
         const res = await fetch(`http://exam.cn/api/graphql/student`, {
             method: 'POST',
             mode: 'cors',
-            body:JSON.stringify({
-                'variables' : null,
-                'operationName' : null,
-                'query' : `
+            body: JSON.stringify({
+                'variables': null,
+                'operationName': null,
+                'query': `
     {
       examRecord(key:"${key}") {
         id
@@ -50,15 +50,16 @@
     function handleClick(e) {
         e.preventDefault();
         promise = test();
+        return false
     }
 
 </script>
 <div>
-    <form>
+    <form on:submit={handleClick}>
         <label>
-            <input type="text"  bind:value={key} placeholder="请输入考试唯一编号"/>
+            <input type="text" required bind:value={key} placeholder="请输入考试唯一编号"/>
         </label>
-        <button on:click={handleClick}>查询成绩</button>
+        <button>查询成绩</button>
     </form>
     {#if promise}
         <div>
@@ -70,7 +71,7 @@
                         考试编号：{promise.examRecord.key}
                     </li>
                     <li>
-                        考试时间：{new Date(promise.examRecord.exam_time*1000).toLocaleString()}
+                        考试时间：{new Date(promise.examRecord.exam_time * 1000).toLocaleString()}
                     </li>
                     <li>
                         成绩：{promise.examRecord.achievement}
