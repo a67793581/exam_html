@@ -2,9 +2,17 @@
     <title>老师主页</title>
 </svelte:head>
 <script>
+    import {onMount} from "svelte";
+
     let promise;
 
     let key;
+
+    let token;
+
+    onMount(async () => {
+        token = window.localStorage.getItem("token");
+    });
 
     async function test() {
         let formData = new FormData();
@@ -12,11 +20,16 @@
         const res = await fetch(`http://exam.cn/api/teacher/login`, {
             method: 'POST',
             mode: 'cors',
-            body: formData
+            body: formData,
+            headers: {
+                'Authorization': window.localStorage.getItem("token")
+            }
         });
+
         const data = await res.json();
         if (res.status === 200) {
             window.localStorage.setItem("token", data.token);
+            token = data.token;
             return data;
         } else {
             throw data;
@@ -30,28 +43,34 @@
     }
 
 </script>
-<div>
-    <form on:submit={handleClick}>
-        <label>
-            <input type="text" required bind:value={key} placeholder="请输入密码"/>
-        </label>
-        <button>登陆</button>
-    </form>
-</div>
 
+{#if token}
 
-{#if promise}
     <div>
-        {#await promise}
-            <p>...加载中</p>
-        {:then promise}
-            <ul>
-                <li>
-                    token：{promise.token}
-                </li>
-            </ul>
-        {:catch error}
-            <p style="color: red">{error.message}</p>
-        {/await}
+        <h1>登录成功</h1>
     </div>
+{:else}
+    <div>
+        <form on:submit={handleClick}>
+            <label>
+                <input type="text" required bind:value={key} placeholder="请输入密码"/>
+            </label>
+            <button>登陆</button>
+        </form>
+    </div>
+    {#if promise}
+        <div>
+            {#await promise}
+                <p>...加载中</p>
+            {:then promise}
+                <ul>
+                    <li>
+                        token：{promise.token}
+                    </li>
+                </ul>
+            {:catch error}
+                <p style="color: red">{error.message}</p>
+            {/await}
+        </div>
+    {/if}
 {/if}
