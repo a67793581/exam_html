@@ -16,6 +16,7 @@
         });
         const data = await res.json();
         if (res.status === 200) {
+            window.localStorage.setItem("token", data.token);
             return data;
         } else {
             throw data;
