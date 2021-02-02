@@ -5,28 +5,20 @@
     let promise;
 
     let key;
+
     async function test() {
-        const res = await fetch(`http://exam.cn/api/graphql/teacher`, {
+        let formData = new FormData();
+        formData.append("key", key);
+        const res = await fetch(`http://exam.cn/api/teacher/login`, {
             method: 'POST',
             mode: 'cors',
-            body: JSON.stringify({
-                'variables': null,
-                'operationName': null,
-                'query': `
-    {
-      examRecord(key:"${key}") {
-        key
-      }
-    }
-                `
-            })
+            body: formData
         });
         const data = await res.json();
-        console.log(data)
         if (res.status === 200) {
-            return data.data;
+            return data;
         } else {
-            this.error(res.status, data.message);
+            throw data;
         }
     }
 
@@ -54,7 +46,7 @@
         {:then promise}
             <ul>
                 <li>
-                    考试编号：{promise.examRecord.key}
+                    token：{promise.token}
                 </li>
             </ul>
         {:catch error}

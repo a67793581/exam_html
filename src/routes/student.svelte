@@ -41,7 +41,7 @@
         });
         const data = await res.json();
         if (res.status === 200) {
-            return data.data;
+            return data;
         } else {
             throw new Error(data);
         }
@@ -68,22 +68,22 @@
             {:then promise}
                 <ul>
                     <li>
-                        考试编号：{promise.examRecord.key}
+                        考试编号：{promise.data.examRecord.key}
                     </li>
                     <li>
-                        考试时间：{new Date(promise.examRecord.exam_time * 1000).toLocaleString()}
+                        考试时间：{new Date(promise.data.examRecord.exam_time * 1000).toLocaleString()}
                     </li>
                     <li>
-                        成绩：{promise.examRecord.achievement}
+                        成绩：{promise.data.examRecord.achievement}
                     </li>
                     <li>
-                        考试批次：{promise.examRecord.code}
+                        考试批次：{promise.data.examRecord.code}
                     </li>
                     <li>
-                        课程名称：{promise.examRecord.course.name}
+                        课程名称：{promise.data.examRecord.course.name}
                     </li>
                     <li>
-                        学生姓名：{promise.examRecord.student.name}
+                        学生姓名：{promise.data.examRecord.student.name}
                     </li>
                 </ul>
             {:catch error}
