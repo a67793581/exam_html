@@ -2,6 +2,8 @@
     <title>老师主页</title>
 </svelte:head>
 <script>
+
+    import ExamRecords from './_examRecords.svelte';
     import {onMount} from "svelte";
 
     let promise;
@@ -22,7 +24,7 @@
             mode: 'cors',
             body: formData,
             headers: {
-                'Authorization': window.localStorage.getItem("token")
+                'Authorization': "Bearer "+window.localStorage.getItem("token")
             }
         });
 
@@ -47,7 +49,7 @@
 {#if token}
 
     <div>
-        <h1>登录成功</h1>
+        <ExamRecords />
     </div>
 {:else}
     <div>
