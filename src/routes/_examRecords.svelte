@@ -3,8 +3,48 @@
     import Pagination from '../components/Pagination.svelte';
 
     let promise;
+    let last_id;
+    let next_id;
+    let active = 1;
+    let todoPage = 1;
+    let first = 1;
+    let pageCount = 0;
+    let pageInfo = 0;
 
-    async function test() {
+    async function test(e) {
+        let whereJson = [
+            "first:" + first
+        ];
+        if (e) {
+            todoPage = parseInt(e.target.innerHTML);
+            if (todoPage === active) {
+                return promise
+            }
+            // afterCount: 7
+            // endCursor: 1
+            // first: 1
+            // hasNextPage: true
+            // startCursor: 1
+            // totalCount: 8
+            console.log({
+                "todoPage": todoPage,
+                "pageCount": pageCount,
+                "active": active,
+                "offset": (todoPage - (active + 1)) * first,
+                "after": pageInfo.endCursor
+            })
+            if (todoPage > active && todoPage <= pageCount) {
+                whereJson.push("after" + ":" + pageInfo.endCursor);
+                whereJson.push("offset" + ":" + (todoPage - (active + 1)) * first);
+            }
+            //目标页 2 当前页5 每页条数1
+            if (todoPage < active && todoPage >= 1) {
+                whereJson.push("before" + ":" + pageInfo.startCursor);
+                whereJson.push("offset" + ":" + ((active - 1) - todoPage) * first);
+            }
+
+        }
+        let where = "(" + whereJson.toString() + ")";
         const res = await fetch(`http://exam.cn/api/graphql/teacher`, {
             method: 'POST',
             mode: 'cors',
@@ -16,7 +56,7 @@
                 'operationName': null,
                 'query': `
 {
-  ExamRecordConnection(first:1) {
+  ExamRecordConnection${where} {
     edges {
       node {
         id
@@ -56,15 +96,19 @@
         });
         const data = await res.json();
         if (res.status === 200) {
-            return data;
-        }else{
+            active = todoPage;
+            pageInfo = data.data.ExamRecordConnection.pageInfo;
+            pageCount = Math.ceil(pageInfo.totalCount / pageInfo.first);
+            promise = data;
+            console.log({"active": active, "pageInfo": pageInfo, "pageCount": pageCount})
+        } else {
             throw new Error(data);
         }
     }
 
 
     onMount(async () => {
-        promise = test();
+        test();
     });
 </script>
 <style type="text/css">
@@ -142,9 +186,9 @@
 
             <tr>
                 <td colspan="10">
-                    <Pagination afterCount={promise.data.ExamRecordConnection.pageInfo.afterCount}
-                                totalCount={promise.data.ExamRecordConnection.pageInfo.totalCount}
-                                first={promise.data.ExamRecordConnection.pageInfo.first}
+                    <Pagination bind:active={active}
+                                bind:pageCount={pageCount}
+                                on:click={test}
                     />
                 </td>
             </tr>

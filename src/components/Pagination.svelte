@@ -1,70 +1,69 @@
 <script>
-    export let first = 5;
-    export let afterCount = 0;
+    export let pageCount = 0;
+    export let active = 0;
     export let totalCount = 0;
-    let page = [];
-    if (totalCount > 0) {
-        let active = parseInt(((totalCount - afterCount) / first).toString())
-        let pageCount = Math.ceil(totalCount / first);
-        let is_ellipsis = false;
-        for (let i = 0; i < pageCount; i++) {
-            let pageNumber = i + 1;
-            if (pageNumber < 3) {
-                page.push({
-                    "pageNumber": pageNumber,
-                    "isActive": pageNumber === active,
+    let page;
+    $: {
+        console.log(`当前页是 ${active}`);
+        test()
+    }
+
+    function test() {
+        let arr = []
+        if (pageCount > 0) {
+            let is_ellipsis = false;
+            if (active > 1) {
+                arr.push({
+                    "pageNumber": '上一页',
+                    "isActive": false,
                 })
-                console.log("前几页" + pageNumber)
-            } else if (pageNumber > (pageCount - 3)) {
-                page.push({
-                    "pageNumber": pageNumber,
-                    "isActive": pageNumber === active,
-                })
-                console.log("后几页" + pageNumber + '|' + (pageCount - 3))
-            } else if (pageNumber < (active + 3) && pageNumber >= active) {
-                page.push({
-                    "pageNumber": pageNumber,
-                    "isActive": pageNumber === active,
-                })
-                console.log("当前页的后几页" + pageNumber)
-            } else if (pageNumber > (active - 3) && pageNumber <= active) {
-                page.push({
-                    "pageNumber": pageNumber,
-                    "isActive": pageNumber === active,
-                })
-                console.log("当前页的前几页" + pageNumber)
-            } else {
-                if (!is_ellipsis) {
-                    page.push({
-                        "pageNumber": "ellipsis",
+            }
+            for (let i = 0; i < pageCount; i++) {
+                let pageNumber = i + 1;
+                if (pageNumber < 3) {
+                    arr.push({
+                        "pageNumber": pageNumber,
                         "isActive": pageNumber === active,
                     })
-                    is_ellipsis = true;
+                    console.log("前几页" + pageNumber)
+                } else if (pageNumber > (pageCount - 3)) {
+                    arr.push({
+                        "pageNumber": pageNumber,
+                        "isActive": pageNumber === active,
+                    })
+                    console.log("后几页" + pageNumber + '|' + (pageCount - 3))
+                } else if (pageNumber < (active + 3) && pageNumber >= active) {
+                    arr.push({
+                        "pageNumber": pageNumber,
+                        "isActive": pageNumber === active,
+                    })
+                    console.log("当前页的后几页" + pageNumber)
+                } else if (pageNumber > (active - 3) && pageNumber <= active) {
+                    arr.push({
+                        "pageNumber": pageNumber,
+                        "isActive": pageNumber === active,
+                    })
+                    console.log("当前页的前几页" + pageNumber)
+                } else {
+                    if (!is_ellipsis) {
+                        arr.push({
+                            "pageNumber": "ellipsis",
+                            "isActive": pageNumber === active,
+                        })
+                        is_ellipsis = true;
+                    }
+                    console.log("其他" + pageNumber)
                 }
-                console.log("其他" + pageNumber)
             }
-        }
-        if (pageCount > 1) {
-            page.push({
-                "pageNumber": '>',
-                "isActive": false,
-            })
-        }
+            if (pageCount > 1) {
+                arr.push({
+                    "pageNumber": '下一页',
+                    "isActive": false,
+                })
+            }
 
-        if (active > 1) {
-            page.push({
-                "pageNumber": '<',
-                "isActive": false,
-            })
+            page = arr
         }
-        console.log({
-            "totalCount": totalCount,
-            "afterCount": afterCount,
-            "first": first,
-            "active": active,
-            "pageCount": pageCount,
-            "page": page
-        })
     }
 </script>
 
@@ -106,7 +105,9 @@
         display: inline-block;
         text-align: center;
         padding: 0.5rem 0.9rem;
+        margin: 0.1em;
     }
+
     .large li.ellipsis {
         padding: 0 1rem;
     }
@@ -115,16 +116,17 @@
 <div class="container large">
     <div class="pagination">
         <ul>
-            {#if totalCount}
+            {#if pageCount}
                 {#each page as v,k}
                     {#if v.pageNumber === "ellipsis"}
                         <li class="ellipsis">. . .</li>
                     {:else}
-                        <li class="{v.isActive ? 'active' : ''}"><a href="javascript:void(0)">{v.pageNumber}</a></li>
+                        <li class="{v.isActive ? 'active' : ''}"><a href="javascript:void(0)"
+                                                                    on:click>{v.pageNumber}</a></li>
                     {/if}
                 {/each}
             {:else}
-                <li class="active"><a href="javascript:void(0)">没有数据</a></li>
+                <li>没有数据</li>
             {/if}
         </ul>
     </div>
