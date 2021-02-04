@@ -1,7 +1,8 @@
 <script>
     import {onMount} from "svelte";
-    import Pagination from '../components/Pagination.svelte';
-    import Modal from '../components/Modal.svelte';
+    import Pagination from '../../components/Pagination.svelte';
+    import Modal from '../../components/Modal.svelte';
+    import Details from './_details.svelte';
 
     let promise;
     let active = 1;
@@ -216,6 +217,7 @@ mutation {
                         <Modal id="{v.id}_update" name="修改" >
                             <div slot="body">
                                 <h1>确定修改编号{v.id}的数据吗</h1>
+                                <Details examRecord={v}/>
                             </div>
                         </Modal>
                     </td>

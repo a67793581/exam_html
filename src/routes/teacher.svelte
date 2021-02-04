@@ -3,7 +3,7 @@
 </svelte:head>
 <script>
 
-    import ExamRecords from './_examRecords.svelte';
+    import ExamRecords from './examRecord/_examRecords.svelte';
     import {onMount} from "svelte";
 
     let promise;
