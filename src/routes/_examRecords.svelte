@@ -1,49 +1,43 @@
 <script>
     import {onMount} from "svelte";
     import Pagination from '../components/Pagination.svelte';
+    import Modal from '../components/Modal.svelte';
 
     let promise;
-    let last_id;
-    let next_id;
     let active = 1;
     let todoPage = 1;
     let first = 1;
     let pageCount = 0;
-    let pageInfo = 0;
+    let pageInfo = {
+        totalCount: 0,
+        startCursor: 0,
+        endCursor: 0,
+    };
+    let oldWhereJson = [
+        "first:" + first
+    ]
 
-    async function test(e) {
+    async function list(e) {
         let whereJson = [
             "first:" + first
         ];
         if (e) {
             todoPage = parseInt(e.target.innerHTML);
-            if (todoPage === active) {
-                return promise
-            }
-            // afterCount: 7
-            // endCursor: 1
-            // first: 1
-            // hasNextPage: true
-            // startCursor: 1
-            // totalCount: 8
-            console.log({
-                "todoPage": todoPage,
-                "pageCount": pageCount,
-                "active": active,
-                "offset": (todoPage - (active + 1)) * first,
-                "after": pageInfo.endCursor
-            })
-            if (todoPage > active && todoPage <= pageCount) {
-                whereJson.push("after" + ":" + pageInfo.endCursor);
-                whereJson.push("offset" + ":" + (todoPage - (active + 1)) * first);
-            }
-            //目标页 2 当前页5 每页条数1
-            if (todoPage < active && todoPage >= 1) {
-                whereJson.push("before" + ":" + pageInfo.startCursor);
-                whereJson.push("offset" + ":" + ((active - 1) - todoPage) * first);
-            }
-
         }
+
+        if (todoPage === active) {
+            whereJson = oldWhereJson
+        }
+        if (todoPage > active && todoPage <= pageCount) {
+            whereJson.push("after" + ":" + pageInfo.endCursor);
+            whereJson.push("offset" + ":" + (todoPage - (active + 1)) * first);
+        }
+        //目标页 2 当前页5 每页条数1
+        if (todoPage < active && todoPage >= 1) {
+            whereJson.push("before" + ":" + pageInfo.startCursor);
+            whereJson.push("offset" + ":" + ((active - 1) - todoPage) * first);
+        }
+
         let where = "(" + whereJson.toString() + ")";
         const res = await fetch(`http://exam.cn/api/graphql/teacher`, {
             method: 'POST',
@@ -86,7 +80,6 @@
       startCursor
       endCursor
       hasNextPage
-      first
     }
   }
 }
@@ -97,18 +90,55 @@
         const data = await res.json();
         if (res.status === 200) {
             active = todoPage;
+            oldWhereJson = whereJson;
             pageInfo = data.data.ExamRecordConnection.pageInfo;
-            pageCount = Math.ceil(pageInfo.totalCount / pageInfo.first);
+            pageCount = Math.ceil(pageInfo.totalCount / first);
             promise = data;
-            console.log({"active": active, "pageInfo": pageInfo, "pageCount": pageCount})
         } else {
             throw new Error(data);
         }
     }
 
 
+    async function cancel() {
+        let mods = document.querySelectorAll('.modal > [type=checkbox]');
+        [].forEach.call(mods, function (mod) {
+            mod.checked = false;
+        });
+    }
+
+    async function del(id) {
+        await cancel()
+        const res = await fetch(`http://exam.cn/api/graphql/teacher`, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Authorization': "Bearer " + window.localStorage.getItem("token")
+            },
+            body: JSON.stringify({
+                'variables': null,
+                'operationName': null,
+                'query': `
+mutation {
+  ExamRecordDML {
+    delete(id:${id}) {
+      id
+    }
+  }
+}
+                `
+            })
+        });
+        const data = await res.json();
+        if (res.status === 200) {
+            await list();
+        } else {
+            throw new Error(data);
+        }
+    }
+
     onMount(async () => {
-        test();
+        await list();
     });
 </script>
 <style type="text/css">
@@ -174,8 +204,20 @@
                     <td>{v.course.name}</td>
                     <td>{v.student.name}</td>
                     <td>
-                        <button value="{v.id}">修改</button>
-                        <button value="{v.id}">删除</button>
+                        <Modal bind:id="{v.id}" name="删除">
+                            <div>
+                                <h1>确定删除吗</h1>
+                                <button class="button button-caution button-pill button-tiny" on:click={del(v.id)}>
+                                    确定
+                                </button>
+                                <button class="button button-pill button-tiny" on:click={cancel}>取消</button>
+                            </div>
+                        </Modal>
+                        <Modal bind:id="{v.id}" name="修改">
+                            <div>
+                                <h1>确定修改吗</h1>
+                            </div>
+                        </Modal>
                     </td>
                 </tr>
             {:else}
@@ -188,7 +230,7 @@
                 <td colspan="10">
                     <Pagination bind:active={active}
                                 bind:pageCount={pageCount}
-                                on:click={test}
+                                on:click={list}
                     />
                 </td>
             </tr>
