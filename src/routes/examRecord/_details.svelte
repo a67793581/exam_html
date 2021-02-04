@@ -10,27 +10,26 @@
         "exam_time": (new Date()).valueOf() / 1000,
         "achievement": 0,
     };
-
-    let key = examRecord.key
-    let code = examRecord.code
-    let exam_time = getTime(examRecord.exam_time)
-    let achievement = examRecord.achievement
+    let exam_time = getTime()
+    $:  examRecord.exam_time = (new Date(exam_time)).valueOf() / 1000
 
 
-    function getTime(time) {
-        let date = new Date(time * 1000)
-        return date.getUTCFullYear() + '-' + pad(date.getUTCMonth() + 1) + '-' + pad(date.getUTCDate()) + 'T' + pad(date.getUTCHours()) + ':' + pad(date.getUTCMinutes())
-    }
 
-    function pad(num, n = 2) {
-        return Array(n > num ? (n - ('' + num).length + 1) : 0).join(0) + num;
+    function getTime() {
+        let date = new Date(examRecord.exam_time * 1000)
+        return date.getFullYear()
+            + '-'
+            + (date.getMonth() + 1).toString().padStart(2,'0')
+            + '-'
+            + date.getDate().toString().padStart(2,'0')
+            + 'T'
+            + date.getHours().toString().padStart(2,'0')
+            + ':'
+            + date.getMinutes().toString().padStart(2,'0')
     }
 
     async function create() {
-        examRecord.key = key
-        examRecord.code = code
-        examRecord.achievement = achievement
-        examRecord.exam_time = (new Date(exam_time)).valueOf() / 1000
+
         let method = "create"
         let id = ``
         if (examRecord.id) {
@@ -98,7 +97,7 @@ mutation {
 <div>
     <label>
         考试编号：
-        <input type="text" bind:value="{key}"/>
+        <input type="text" bind:value="{examRecord.key}"/>
     </label>
     <br/>
 
@@ -110,13 +109,13 @@ mutation {
 
     <label>
         成绩：
-        <input type="number" bind:value="{achievement}" min="0"/>
+        <input type="number" bind:value="{examRecord.achievement}" min="0"/>
     </label>
     <br/>
 
     <label>
         考试批次：
-        <input type="text" bind:value="{code}"/>
+        <input type="text" bind:value="{examRecord.code}"/>
     </label>
     <br/>
     <button on:click={create}>提交</button>

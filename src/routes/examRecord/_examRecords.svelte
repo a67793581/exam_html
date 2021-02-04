@@ -170,7 +170,12 @@ mutation {
     <tr>
         <th colspan="9">考试记录</th>
         <th colspan="1">
-            <button class="button button-pill button-action button-tiny">新增</button>
+            <Modal id="create" name="新增" className="button button-pill button-action button-tiny">
+                <div slot="body">
+                    <h1>新增考试记录</h1>
+                    <Details cancel={cancel} list={list}/>
+                </div>
+            </Modal>
             <button class="button button-pill button-action button-tiny">导入</button>
         </th>
     </tr>
@@ -216,7 +221,7 @@ mutation {
                         </Modal>
                         <Modal id="{v.id}_update" name="修改">
                             <div slot="body">
-                                <h1>确定修改编号{v.id}的数据吗</h1>
+                                <h1>正在修改编号{v.id}的信息</h1>
                                 <Details examRecord={v} cancel={cancel} list={list}/>
                             </div>
                         </Modal>
