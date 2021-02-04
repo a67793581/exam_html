@@ -53,6 +53,5 @@
 		<li><a aria-current="{segment === undefined ? 'page' : undefined}" href=".">首页</a></li>
 		<li><a aria-current="{segment === 'student' ? 'page' : undefined}" href="student">学生主页</a></li>
 		<li><a aria-current="{segment === 'teacher' ? 'page' : undefined}" href="teacher">老师主页</a></li>
-		<li><a rel=prefetch aria-current="{segment === 'blog' ? 'page' : undefined}" href="blog">blog</a></li>
 	</ul>
 </nav>

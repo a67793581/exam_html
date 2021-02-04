@@ -174,7 +174,7 @@ mutation {
         </th>
     </tr>
     <tr>
-        <th>自增id</th>
+        <th>编号</th>
         <th>创建时间</th>
         <th>更新时间</th>
         <th>考试时间</th>
