@@ -109,7 +109,6 @@
     }
 
     async function del(id) {
-        await cancel()
         const res = await fetch(`http://exam.cn/api/graphql/teacher`, {
             method: 'POST',
             mode: 'cors',
@@ -132,6 +131,7 @@ mutation {
         });
         const data = await res.json();
         if (res.status === 200) {
+            await cancel()
             await list();
         } else {
             throw new Error(data);
@@ -214,10 +214,10 @@ mutation {
                                 <button class="button button-pill button-tiny" on:click={cancel}>取消</button>
                             </div>
                         </Modal>
-                        <Modal id="{v.id}_update" name="修改" >
+                        <Modal id="{v.id}_update" name="修改">
                             <div slot="body">
                                 <h1>确定修改编号{v.id}的数据吗</h1>
-                                <Details examRecord={v}/>
+                                <Details examRecord={v} cancel={cancel} list={list}/>
                             </div>
                         </Modal>
                     </td>
