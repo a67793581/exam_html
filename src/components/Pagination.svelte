@@ -1,7 +1,6 @@
 <script>
     export let pageCount = 0;
     export let active = 0;
-    export let totalCount = 0;
     let page;
     $: {
         console.log(`当前页是 ${active}`);
@@ -81,21 +80,21 @@
     }
 
     /*鼠标选中*/
-    .pagination li:hover a {
+    .pagination li:hover button {
         color: #fdfdfd;
         background-color: #1d1f20;
         border: solid 1px #1d1f20;
     }
 
     /*当前页*/
-    .pagination li.active a {
+    .pagination li.active button {
         color: #fdfdfd;
         background-color: #1d1f20;
         border: solid 1px #1d1f20;
     }
 
     /*超链接*/
-    .pagination li a {
+    .pagination li button {
         background: #fdfdfd;
         border: solid 1px #d6d6d6;
         border-radius: 0.2rem;
@@ -121,8 +120,9 @@
                     {#if v.pageNumber === "ellipsis"}
                         <li class="ellipsis">. . .</li>
                     {:else}
-                        <li class="{v.isActive ? 'active' : ''}"><a href="javascript:void(0)"
-                                                                    on:click>{v.pageNumber}</a></li>
+                        <li class="{v.isActive ? 'active' : ''}">
+                            <button on:click>{v.pageNumber}</button>
+                        </li>
                     {/if}
                 {/each}
             {:else}
