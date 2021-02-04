@@ -6,7 +6,7 @@
     let promise;
     let active = 1;
     let todoPage = 1;
-    let first = 1;
+    let first = 2;
     let pageCount = 0;
     let pageInfo = {
         totalCount: 0,
@@ -204,18 +204,18 @@ mutation {
                     <td>{v.course.name}</td>
                     <td>{v.student.name}</td>
                     <td>
-                        <Modal bind:id="{v.id}" name="删除">
+                        <Modal id="{v.id}_del" name="删除">
                             <div>
-                                <h1>确定删除吗</h1>
+                                <h1>确定删除编号{v.id}的数据吗</h1>
                                 <button class="button button-caution button-pill button-tiny" on:click={del(v.id)}>
                                     确定
                                 </button>
                                 <button class="button button-pill button-tiny" on:click={cancel}>取消</button>
                             </div>
                         </Modal>
-                        <Modal bind:id="{v.id}" name="修改">
+                        <Modal id="{v.id}_update" name="修改">
                             <div>
-                                <h1>确定修改吗</h1>
+                                <h1>确定修改编号{v.id}的数据吗</h1>
                             </div>
                         </Modal>
                     </td>
