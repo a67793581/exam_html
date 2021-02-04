@@ -3,8 +3,9 @@
     export let active = 0;
     let page;
     $: {
-        console.log(`当前页是 ${active}`);
-        test()
+        if(active){
+            test()
+        }
     }
 
     function test() {
@@ -24,25 +25,21 @@
                         "pageNumber": pageNumber,
                         "isActive": pageNumber === active,
                     })
-                    console.log("前几页" + pageNumber)
                 } else if (pageNumber > (pageCount - 3)) {
                     arr.push({
                         "pageNumber": pageNumber,
                         "isActive": pageNumber === active,
                     })
-                    console.log("后几页" + pageNumber + '|' + (pageCount - 3))
                 } else if (pageNumber < (active + 3) && pageNumber >= active) {
                     arr.push({
                         "pageNumber": pageNumber,
                         "isActive": pageNumber === active,
                     })
-                    console.log("当前页的后几页" + pageNumber)
                 } else if (pageNumber > (active - 3) && pageNumber <= active) {
                     arr.push({
                         "pageNumber": pageNumber,
                         "isActive": pageNumber === active,
                     })
-                    console.log("当前页的前几页" + pageNumber)
                 } else {
                     if (!is_ellipsis) {
                         arr.push({
@@ -51,7 +48,6 @@
                         })
                         is_ellipsis = true;
                     }
-                    console.log("其他" + pageNumber)
                 }
             }
             if (pageCount > 1) {

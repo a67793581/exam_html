@@ -1,6 +1,7 @@
 <script>
 
     export let id = "modal";
+    export let className = "button button-primary button-pill button-tiny";
     export let name = "显示模态框";
 </script>
 
@@ -31,6 +32,11 @@
         z-index: 100000;
     }
 
+    /**隐藏modal体积**/
+    .modal {
+        display: inline-block;
+    }
+
     /*内容*/
     .modal > div {
         border: 0;
@@ -53,7 +59,7 @@
 
 </style>
 <!--勾选开关-->
-<label for="{id}" class="button button-primary button-pill button-tiny">{name}</label>
+<label for="{id}" class="{className}">{name}</label>
 
 <div class="modal">
     <!--    检测是否开启modal的隐藏开关-->
@@ -63,6 +69,6 @@
 
     <!--内容主体-->
     <div>
-        <slot/>
+        <slot name="body"/>
     </div>
 </div>

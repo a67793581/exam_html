@@ -169,8 +169,8 @@ mutation {
     <tr>
         <th colspan="9">考试记录</th>
         <th colspan="1">
-            <button>新增</button>
-            <button>导入</button>
+            <button class="button button-pill button-action button-tiny">新增</button>
+            <button class="button button-pill button-action button-tiny">导入</button>
         </th>
     </tr>
     <tr>
@@ -204,8 +204,8 @@ mutation {
                     <td>{v.course.name}</td>
                     <td>{v.student.name}</td>
                     <td>
-                        <Modal id="{v.id}_del" name="删除">
-                            <div>
+                        <Modal id="{v.id}_del" name="删除" className="button button-caution button-pill button-tiny">
+                            <div slot="body">
                                 <h1>确定删除编号{v.id}的数据吗</h1>
                                 <button class="button button-caution button-pill button-tiny" on:click={del(v.id)}>
                                     确定
@@ -213,8 +213,8 @@ mutation {
                                 <button class="button button-pill button-tiny" on:click={cancel}>取消</button>
                             </div>
                         </Modal>
-                        <Modal id="{v.id}_update" name="修改">
-                            <div>
+                        <Modal id="{v.id}_update" name="修改" >
+                            <div slot="body">
                                 <h1>确定修改编号{v.id}的数据吗</h1>
                             </div>
                         </Modal>
