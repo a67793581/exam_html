@@ -40,11 +40,11 @@
             })
         });
         const data = await res.json();
-        if (res.status === 200) {
-            return data;
-        } else {
-            throw new Error(data);
+        if (res.status !== 200 || data.errors !== undefined) {
+            throw data;
         }
+
+        return data;
     }
 
     function handleClick(e) {
@@ -87,7 +87,7 @@
                     </li>
                 </ul>
             {:catch error}
-                <p style="color: red">{error.message}</p>
+                <p style="color: red">{error.errors[0].message}</p>
             {/await}
         </div>
     {/if}
