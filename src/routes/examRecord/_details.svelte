@@ -80,13 +80,12 @@ mutation {
             })
         });
         const data = await res.json();
-        if (res.status === 200) {
-            await cancel()
 
-        } else {
-            throw new Error(data);
+        if (res.status !== 200 || data.errors !== undefined) {
+            throw data;
         }
-        list()
+        await cancel()
+        await list()
     }
 
 

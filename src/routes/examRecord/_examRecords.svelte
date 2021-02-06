@@ -89,15 +89,15 @@
             })
         });
         const data = await res.json();
-        if (res.status === 200) {
-            active = todoPage;
-            oldWhereJson = whereJson;
-            pageInfo = data.data.ExamRecordConnection.pageInfo;
-            pageCount = Math.ceil(pageInfo.totalCount / first);
-            promise = data;
-        } else {
-            throw new Error(data);
+        if (res.status !== 200 || data.errors !== undefined) {
+            throw data;
         }
+
+        active = todoPage;
+        oldWhereJson = whereJson;
+        pageInfo = data.data.ExamRecordConnection.pageInfo;
+        pageCount = Math.ceil(pageInfo.totalCount / first);
+        promise = data;
     }
 
 
@@ -130,12 +130,12 @@ mutation {
             })
         });
         const data = await res.json();
-        if (res.status === 200) {
-            await cancel()
-            await list();
-        } else {
-            throw new Error(data);
+
+        if (res.status !== 200 || data.errors !== undefined) {
+            throw data;
         }
+        await cancel()
+        await list();
     }
 
     onMount(async () => {

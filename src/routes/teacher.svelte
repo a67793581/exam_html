@@ -10,7 +10,7 @@
 
     let key;
 
-    let token;
+    let token = ""
 
     onMount(async () => {
         token = window.localStorage.getItem("token");
@@ -24,18 +24,19 @@
             mode: 'cors',
             body: formData,
             headers: {
-                'Authorization': "Bearer "+window.localStorage.getItem("token")
+                'Authorization': "Bearer " + token
             }
         });
 
         const data = await res.json();
-        if (res.status === 200) {
-            window.localStorage.setItem("token", data.token);
-            token = data.token;
-            return data;
-        } else {
+
+        if (res.status !== 200 || data.errors !== undefined) {
             throw data;
         }
+
+        window.localStorage.setItem("token", data.token);
+        token = data.token;
+        return data;
     }
 
     function handleClick(e) {
