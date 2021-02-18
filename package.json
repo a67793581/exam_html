@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "compression": "^1.7.1",
+    "json2csv": "^5.0.6",
     "polka": "next",
     "redux": "^4.0.5",
     "sirv": "^1.0.0"

@@ -4,6 +4,7 @@
     import Modal from '../../components/Modal.svelte';
     import Details from './_details.svelte';
 
+    // import "json2csv";
     let promise;
     let active = 1;
     let todoPage = 1;
@@ -142,6 +143,24 @@ mutation {
     }
 
     async function upload() {
+        // json数据转csv格式
+        // let csv = json2csv({ data: [
+        //         {
+        //             "car": "Audi",
+        //             "price": 40000,
+        //             "color": "blue"
+        //         }, {
+        //             "car": "BMW",
+        //             "price": 35000,
+        //             "color": "black"
+        //         }, {
+        //             "car": "Porsche",
+        //             "price": 60000,
+        //             "color": "green"
+        //         }
+        //     ], fields: ['car', 'price', 'color'] });
+        // console.log(csv)
+
         let formData = new FormData();
         let fileField = document.querySelector("input[type='file']");
 
