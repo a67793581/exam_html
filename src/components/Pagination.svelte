@@ -3,7 +3,7 @@
     export let active = 0;
     let page;
     $: {
-        if(active){
+        if (active) {
             test()
         }
     }
@@ -14,7 +14,8 @@
             let is_ellipsis = false;
             if (active > 1) {
                 arr.push({
-                    "pageNumber": '上一页',
+                    "pageNumber": active - 1,
+                    "explain": '上一页',
                     "isActive": false,
                 })
             }
@@ -23,27 +24,32 @@
                 if (pageNumber < 3) {
                     arr.push({
                         "pageNumber": pageNumber,
+                        "explain": pageNumber,
                         "isActive": pageNumber === active,
                     })
                 } else if (pageNumber > (pageCount - 3)) {
                     arr.push({
                         "pageNumber": pageNumber,
+                        "explain": pageNumber,
                         "isActive": pageNumber === active,
                     })
                 } else if (pageNumber < (active + 3) && pageNumber >= active) {
                     arr.push({
                         "pageNumber": pageNumber,
+                        "explain": pageNumber,
                         "isActive": pageNumber === active,
                     })
                 } else if (pageNumber > (active - 3) && pageNumber <= active) {
                     arr.push({
                         "pageNumber": pageNumber,
+                        "explain": pageNumber,
                         "isActive": pageNumber === active,
                     })
                 } else {
                     if (!is_ellipsis) {
                         arr.push({
                             "pageNumber": "ellipsis",
+                            "explain": ". . .",
                             "isActive": pageNumber === active,
                         })
                         is_ellipsis = true;
@@ -52,7 +58,8 @@
             }
             if (pageCount > 1) {
                 arr.push({
-                    "pageNumber": '下一页',
+                    "pageNumber": active + 1,
+                    "explain": "下一页",
                     "isActive": false,
                 })
             }
@@ -114,10 +121,10 @@
             {#if pageCount}
                 {#each page as v,k}
                     {#if v.pageNumber === "ellipsis"}
-                        <li class="ellipsis">. . .</li>
+                        <li class="ellipsis">{v.explain}</li>
                     {:else}
                         <li class="{v.isActive ? 'active' : ''}">
-                            <button on:click>{v.pageNumber}</button>
+                            <button on:click value="{v.pageNumber}">{v.explain}</button>
                         </li>
                     {/if}
                 {/each}

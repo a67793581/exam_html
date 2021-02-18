@@ -23,7 +23,7 @@
             "first:" + first
         ];
         if (e) {
-            todoPage = parseInt(e.target.innerHTML);
+            todoPage = parseInt(e.target.value);
         }
 
         if (todoPage === active) {
