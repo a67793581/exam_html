@@ -100,7 +100,10 @@
         promise = data;
     }
 
-
+    /**
+     * 关闭模态框
+     * @returns {Promise<void>}
+     */
     async function cancel() {
         let mods = document.querySelectorAll('.modal > [type=checkbox]');
         [].forEach.call(mods, function (mod) {
@@ -128,6 +131,28 @@ mutation {
 }
                 `
             })
+        });
+        const data = await res.json();
+
+        if (res.status !== 200 || data.errors !== undefined) {
+            throw data;
+        }
+        await cancel()
+        await list();
+    }
+
+    async function upload() {
+        let formData = new FormData();
+        let fileField = document.querySelector("input[type='file']");
+
+        formData.append('uploadFile', fileField.files[0]);
+        const res = await fetch(`http://exam.cn/api/test`, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Authorization': "Bearer " + window.localStorage.getItem("token")
+            },
+            body:formData
         });
         const data = await res.json();
 
@@ -176,7 +201,15 @@ mutation {
                     <Details cancel={cancel} list={list}/>
                 </div>
             </Modal>
-            <button class="button button-pill button-action button-tiny">导入</button>
+            <Modal id="upload" name="导入" className="button button-pill button-action button-tiny">
+                <div slot="body">
+                    <h1>导入</h1>
+                    <h3>点击下载导入模板</h3>
+
+                    <input type="file" />
+                    <button on:click={upload}>上传</button>
+                </div>
+            </Modal>
         </th>
     </tr>
     <tr>
