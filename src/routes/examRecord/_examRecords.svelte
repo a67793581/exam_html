@@ -3,8 +3,8 @@
     import Pagination from '../../components/Pagination.svelte';
     import Modal from '../../components/Modal.svelte';
     import Details from './_details.svelte';
+    import Import from './_import.svelte';
 
-    // import "json2csv";
     let promise;
     let active = 1;
     let todoPage = 1;
@@ -89,7 +89,7 @@
                 `
             })
         });
-        const data = await res.json();
+        let data = await res.json();
         if (res.status !== 200 || data.errors !== undefined) {
             throw data;
         }
@@ -133,7 +133,7 @@ mutation {
                 `
             })
         });
-        const data = await res.json();
+        let data = await res.json();
 
         if (res.status !== 200 || data.errors !== undefined) {
             throw data;
@@ -142,45 +142,6 @@ mutation {
         await list();
     }
 
-    async function upload() {
-        // json数据转csv格式
-        // let csv = json2csv({ data: [
-        //         {
-        //             "car": "Audi",
-        //             "price": 40000,
-        //             "color": "blue"
-        //         }, {
-        //             "car": "BMW",
-        //             "price": 35000,
-        //             "color": "black"
-        //         }, {
-        //             "car": "Porsche",
-        //             "price": 60000,
-        //             "color": "green"
-        //         }
-        //     ], fields: ['car', 'price', 'color'] });
-        // console.log(csv)
-
-        let formData = new FormData();
-        let fileField = document.querySelector("input[type='file']");
-
-        formData.append('uploadFile', fileField.files[0]);
-        const res = await fetch(`http://exam.cn/api/test`, {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-                'Authorization': "Bearer " + window.localStorage.getItem("token")
-            },
-            body:formData
-        });
-        const data = await res.json();
-
-        if (res.status !== 200 || data.errors !== undefined) {
-            throw data;
-        }
-        await cancel()
-        await list();
-    }
 
     onMount(async () => {
         await list();
@@ -222,11 +183,7 @@ mutation {
             </Modal>
             <Modal id="upload" name="导入" className="button button-pill button-action button-tiny">
                 <div slot="body">
-                    <h1>导入</h1>
-                    <h3>点击下载导入模板</h3>
-
-                    <input type="file" />
-                    <button on:click={upload}>上传</button>
+                    <Import cancel={cancel} list={list}/>
                 </div>
             </Modal>
         </th>
