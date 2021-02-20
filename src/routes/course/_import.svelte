@@ -12,7 +12,6 @@
     async function upload(e) {
         e.target.setAttribute("disabled", true)
         e.target.innerHTML = "上传中..."
-
         let formData = new FormData();
         let fileField = document.getElementById("uploadFile");
         formData.append('uploadFile', fileField.files[0]);

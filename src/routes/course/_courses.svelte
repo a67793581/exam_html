@@ -169,7 +169,7 @@ mutation {
 </style>
 <table>
     <tr>
-        <th colspan="9">考试记录</th>
+        <th colspan="9">课程列表</th>
         <th colspan="1">
             <Modal id="create" name="新增" className="button button-pill button-action button-tiny">
                 <div slot="body">

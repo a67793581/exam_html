@@ -4,6 +4,11 @@
 <script>
 
     import ExamRecords from './examRecord/_examRecords.svelte';
+    import Students from './student/_students.svelte';
+    import Courses from './course/_courses.svelte';
+    import Section from './../components/Section.svelte';
+    import SectionDiv from './../components/SectionDiv.svelte';
+
     import {onMount} from "svelte";
 
     let promise;
@@ -11,6 +16,8 @@
     let key;
 
     let token = ""
+
+    let use = "examRecords"
 
     onMount(async () => {
         token = window.localStorage.getItem("token");
@@ -48,10 +55,19 @@
 </script>
 
 {#if token}
+    <Section>
 
-    <div>
-        <ExamRecords />
-    </div>
+        <SectionDiv id="examRecords" name="考试记录" use="Y">
+            <ExamRecords/>
+        </SectionDiv>
+        <SectionDiv id="Students" name="学生列表" use="N">
+            <Students/>
+        </SectionDiv>
+        <SectionDiv id="Courses" name="课程列表" use="N">
+<!--            <Courses/>-->
+        </SectionDiv>
+    </Section>
+
 {:else}
     <div>
         <form on:submit={handleClick}>
