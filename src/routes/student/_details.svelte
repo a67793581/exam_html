@@ -1,36 +1,18 @@
 <script>
     export let cancel
     export let list
-    export let examRecord = {
+    export let student = {
         "id": 0,
         "key": "",
         "name": "",
     };
-    let exam_time = getTime()
-    $:  examRecord.exam_time = (new Date(exam_time)).valueOf() / 1000
-
-
-
-    function getTime() {
-        let date = new Date(examRecord.exam_time * 1000)
-        return date.getFullYear()
-            + '-'
-            + (date.getMonth() + 1).toString().padStart(2,'0')
-            + '-'
-            + date.getDate().toString().padStart(2,'0')
-            + 'T'
-            + date.getHours().toString().padStart(2,'0')
-            + ':'
-            + date.getMinutes().toString().padStart(2,'0')
-    }
-
     async function create() {
 
         let method = "create"
         let id = ``
-        if (examRecord.id) {
+        if (student.id) {
             method = "update"
-            id = `id:${examRecord.id}`
+            id = `id:${student.id}`
         }
         const res = await fetch(`http://exam.cn/api/graphql/teacher`, {
             method: 'POST',
@@ -43,11 +25,11 @@
                 'operationName': null,
                 'query': `
 mutation {
-  StudentDML {
+  studentDML {
     ${method}(
     ${id}
-    key:"${examRecord.key}"
-    name:"${examRecord.name}"
+    key:"${student.key}"
+    name:"${student.name}"
     ) {
         id
         key
@@ -75,12 +57,12 @@ mutation {
 <div>
     <label>
         学号：
-        <input type="text" bind:value="{examRecord.key}"/>
+        <input type="text" bind:value="{student.key}"/>
     </label>
     <br/>
     <label>
         姓名：
-        <input type="text" bind:value="{examRecord.name}"/>
+        <input type="text" bind:value="{student.name}"/>
     </label>
     <br/>
     <button on:click={create}>提交</button>

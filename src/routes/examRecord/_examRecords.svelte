@@ -52,7 +52,7 @@
                 'operationName': null,
                 'query': `
 {
-  ExamRecordConnection${where} {
+  examRecordConnection${where} {
     list {
         id
         created_at
@@ -92,7 +92,7 @@
 
         active = todoPage;
         oldWhereJson = whereJson;
-        pageInfo = data.data.ExamRecordConnection.pageInfo;
+        pageInfo = data.data.examRecordConnection.pageInfo;
         pageCount = Math.ceil(pageInfo.totalCount / first);
         promise = data;
     }
@@ -120,7 +120,7 @@
                 'operationName': null,
                 'query': `
 mutation {
-  ExamRecordDML {
+  examRecordDML {
     delete(id:${id}) {
       id
     }
@@ -203,7 +203,7 @@ mutation {
                 <td colspan="10">加载中...</td>
             </tr>
         {:then promise}
-            {#each promise.data.ExamRecordConnection.list as v, index}
+            {#each promise.data.examRecordConnection.list as v, index}
                 <tr>
                     <td>{v.id}</td>
                     <td>{new Date(v.created_at * 1000).toLocaleString()}</td>

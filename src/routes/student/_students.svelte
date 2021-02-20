@@ -51,7 +51,7 @@
                 'operationName': null,
                 'query': `
 {
-  StudentConnection${where} {
+  studentConnection${where} {
     list {
         id
         created_at
@@ -79,7 +79,7 @@
 
         active = todoPage;
         oldWhereJson = whereJson;
-        pageInfo = data.data.StudentConnection.pageInfo;
+        pageInfo = data.data.studentConnection.pageInfo;
         pageCount = Math.ceil(pageInfo.totalCount / first);
         promise = data;
     }
@@ -107,7 +107,7 @@
                 'operationName': null,
                 'query': `
 mutation {
-  ExamRecordDML {
+  studentDML {
     delete(id:${id}) {
       id
     }
@@ -181,7 +181,7 @@ mutation {
                 <td colspan="7">加载中...</td>
             </tr>
         {:then promise}
-            {#each promise.data.StudentConnection.list as v, index}
+            {#each promise.data.studentConnection.list as v, index}
                 <tr>
                     <td>{v.id}</td>
                     <td>{new Date(v.created_at * 1000).toLocaleString()}</td>
@@ -202,7 +202,7 @@ mutation {
                         <Modal id="students_{v.id}_update" name="修改">
                             <div slot="body">
                                 <h1>正在修改编号{v.id}的信息</h1>
-                                <Details examRecord={v} cancel={cancel} list={list}/>
+                                <Details student={v} cancel={cancel} list={list}/>
                             </div>
                         </Modal>
                     </td>

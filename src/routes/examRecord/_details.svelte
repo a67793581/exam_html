@@ -47,7 +47,7 @@
                 'operationName': null,
                 'query': `
 mutation {
-  ExamRecordDML {
+  examRecordDML {
     ${method}(
     ${id}
     key:"${examRecord.key}"

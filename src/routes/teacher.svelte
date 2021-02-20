@@ -64,7 +64,7 @@
             <Students/>
         </SectionDiv>
         <SectionDiv id="Courses" name="课程列表" use="N">
-<!--            <Courses/>-->
+            <Courses/>
         </SectionDiv>
     </Section>
 

@@ -51,26 +51,12 @@
                 'operationName': null,
                 'query': `
 {
-  ExamRecordConnection${where} {
+  courseConnection${where} {
     list {
         id
         created_at
         updated_at
-        course_id
-        student_id
-        code
-        key
-        exam_time
-        achievement
-        student {
-          id
-          name
-          key
-        }
-        course {
-          id
-          name
-        }
+        name
     }
     pageInfo {
       totalCount
@@ -91,7 +77,7 @@
 
         active = todoPage;
         oldWhereJson = whereJson;
-        pageInfo = data.data.ExamRecordConnection.pageInfo;
+        pageInfo = data.data.courseConnection.pageInfo;
         pageCount = Math.ceil(pageInfo.totalCount / first);
         promise = data;
     }
@@ -119,7 +105,7 @@
                 'operationName': null,
                 'query': `
 mutation {
-  ExamRecordDML {
+  courseDML {
     delete(id:${id}) {
       id
     }
@@ -168,9 +154,9 @@ mutation {
 </style>
 <table>
     <tr>
-        <th colspan="9">课程列表</th>
+        <th colspan="4">课程列表</th>
         <th colspan="1">
-            <Modal id="create" name="新增" className="button button-pill button-action button-tiny">
+            <Modal id="course_create" name="新增" className="button button-pill button-action button-tiny">
                 <div slot="body">
                     <h1>新增考试记录</h1>
                     <Details cancel={cancel} list={list}/>
@@ -182,34 +168,25 @@ mutation {
         <th>编号</th>
         <th>创建时间</th>
         <th>更新时间</th>
-        <th>考试时间</th>
-        <th>考试唯一编号</th>
-        <th>考试批次</th>
-        <th>考试成绩</th>
-        <th>课程</th>
-        <th>学生</th>
+        <th>课程名称</th>
         <th>操作</th>
     </tr>
 
     {#if promise}
         {#await promise}
             <tr>
-                <td colspan="10">加载中...</td>
+                <td colspan="5">加载中...</td>
             </tr>
         {:then promise}
-            {#each promise.data.ExamRecordConnection.list as v, index}
+            {#each promise.data.courseConnection.list as v, index}
                 <tr>
                     <td>{v.id}</td>
                     <td>{new Date(v.created_at * 1000).toLocaleString()}</td>
                     <td>{new Date(v.updated_at * 1000).toLocaleString()}</td>
-                    <td>{new Date(v.exam_time * 1000).toLocaleString()}</td>
-                    <td>{v.key}</td>
-                    <td>{v.code}</td>
-                    <td>{v.achievement}</td>
-                    <td>{v.course.name}</td>
-                    <td>{v.student.name}</td>
+                    <td>{v.name}</td>
                     <td>
-                        <Modal id="{v.id}_del" name="删除" className="button button-caution button-pill button-tiny">
+                        <Modal id="course_{v.id}_del" name="删除"
+                               className="button button-caution button-pill button-tiny">
                             <div slot="body">
                                 <h1>确定删除编号{v.id}的数据吗</h1>
                                 <button class="button button-caution button-pill button-tiny" on:click={del(v.id)}>
@@ -218,10 +195,10 @@ mutation {
                                 <button class="button button-pill button-tiny" on:click={cancel}>取消</button>
                             </div>
                         </Modal>
-                        <Modal id="{v.id}_update" name="修改">
+                        <Modal id="course_{v.id}_update" name="修改">
                             <div slot="body">
                                 <h1>正在修改编号{v.id}的信息</h1>
-                                <Details examRecord={v} cancel={cancel} list={list}/>
+                                <Details course={v} cancel={cancel} list={list}/>
                             </div>
                         </Modal>
                     </td>
