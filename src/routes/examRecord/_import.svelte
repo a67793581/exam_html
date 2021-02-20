@@ -57,24 +57,17 @@
         download(e);
     }
 
-    async function download(e) {
-        let myCars = [
-            {
-                "考试编号": "",
-                "考试时间": "",
-                "成绩": "",
-                "考试批次": ""
-            },
-        ];
-        let json2csvParser = new Parser();
-        let csv = json2csvParser.parse(myCars);
+    async function download() {
+
+        let json2csvParser = new Parser({fields: ['考试编号', '考试时间', '成绩', '考试批次']});
+        let csv = json2csvParser.parse();
 
 
         let title = "导入模板.csv";
         let uri = 'data:text/csv;charset=utf-8,\uFEFF' + encodeURIComponent(csv);
         let link = document.createElement("a");
         link.href = uri;
-        link.download =  title;
+        link.download = title;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
