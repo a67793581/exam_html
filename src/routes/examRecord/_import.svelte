@@ -59,7 +59,7 @@
 
     async function download() {
 
-        let json2csvParser = new Parser({fields: ['考试编号', '考试时间', '成绩', '考试批次']});
+        let json2csvParser = new Parser({fields: ['考试编号', '考试时间', '成绩', '考试批次','课程','学生姓名','学号']});
         let csv = json2csvParser.parse();
 
 
