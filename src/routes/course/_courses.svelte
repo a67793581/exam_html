@@ -3,7 +3,6 @@
     import Pagination from '../../components/Pagination.svelte';
     import Modal from '../../components/Modal.svelte';
     import Details from './_details.svelte';
-    import Import from './_import.svelte';
 
     let promise;
     let active = 1;
@@ -175,11 +174,6 @@ mutation {
                 <div slot="body">
                     <h1>新增考试记录</h1>
                     <Details cancel={cancel} list={list}/>
-                </div>
-            </Modal>
-            <Modal id="upload" name="导入" className="button button-pill button-action button-tiny">
-                <div slot="body">
-                    <Import cancel={cancel} list={list}/>
                 </div>
             </Modal>
         </th>

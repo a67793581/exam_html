@@ -3,7 +3,6 @@
     import Pagination from '../../components/Pagination.svelte';
     import Modal from '../../components/Modal.svelte';
     import Details from './_details.svelte';
-    import Import from './_import.svelte';
 
     let promise;
     let active = 1;
@@ -165,11 +164,6 @@ mutation {
                     <Details cancel={cancel} list={list}/>
                 </div>
             </Modal>
-            <Modal id="students_upload" name="导入" className="button button-pill button-action button-tiny">
-                <div slot="body">
-                    <Import cancel={cancel} list={list}/>
-                </div>
-            </Modal>
         </th>
     </tr>
     <tr>
@@ -195,7 +189,8 @@ mutation {
                     <td>{v.key}</td>
                     <td>{v.name}</td>
                     <td>
-                        <Modal id="students_{v.id}_del" name="删除" className="button button-caution button-pill button-tiny">
+                        <Modal id="students_{v.id}_del" name="删除"
+                               className="button button-caution button-pill button-tiny">
                             <div slot="body">
                                 <h1>确定删除编号{v.id}的数据吗</h1>
                                 <button class="button button-caution button-pill button-tiny" on:click={del(v.id)}>
