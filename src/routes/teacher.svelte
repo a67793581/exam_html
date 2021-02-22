@@ -20,7 +20,6 @@
     let token;
     //绑定token到当前变量
     const unsubscribe = tokenWritable.subscribe(value => {
-        console.log("刷新token:"+value)
         token = value;
     });
     onDestroy(unsubscribe);

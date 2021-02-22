@@ -158,7 +158,6 @@ query {
             })
         });
         let data = await checkResult(res);
-        console.log(data.data.students);
         return data.data.students;
     }
 
@@ -186,7 +185,6 @@ query {
         });
         let data = await checkResult(res);
 
-        console.log(data.data.courses);
         return data.data.courses;
     }
 
