@@ -1,19 +1,8 @@
 <script>
     export let cancel
     export let list
-    export let students = [
-        {
-            id: 0,
-            name: 0,
-            key: 0,
-        }
-    ]
-    export let courses = [
-        {
-            id: 0,
-            name: 0,
-        }
-    ]
+    export let students = []
+    export let courses = []
     export let examRecord = {
         "id": 0,
         "course_id": 0,
@@ -97,7 +86,7 @@ mutation {
         if (res.status !== 200) {
             throw data;
         }
-        if( data.errors !== undefined){
+        if (data.errors !== undefined) {
             throw data.errors[0];
         }
         await cancel()
@@ -132,12 +121,6 @@ mutation {
                 <option value={v.id}>{v.name}</option>
             {/each}
         </select>
-    </label>
-    <br/>
-
-    <label>
-        学生：
-        <input type="text" bind:value="{examRecord.student_id}"/>
     </label>
     <br/>
     <label>
