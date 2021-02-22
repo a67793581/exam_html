@@ -160,7 +160,7 @@ mutation {
         <th colspan="1">
             <Modal id="students_create" name="新增" className="button button-pill button-action button-tiny">
                 <div slot="body">
-                    <h1>新增考试记录</h1>
+                    <h1>新增学生</h1>
                     <Details cancel={cancel} list={list}/>
                 </div>
             </Modal>

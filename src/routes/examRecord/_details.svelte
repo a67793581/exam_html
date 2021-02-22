@@ -1,6 +1,19 @@
 <script>
     export let cancel
     export let list
+    export let students = [
+        {
+            id: 0,
+            name: 0,
+            key: 0,
+        }
+    ]
+    export let courses = [
+        {
+            id: 0,
+            name: 0,
+        }
+    ]
     export let examRecord = {
         "id": 0,
         "course_id": 0,
@@ -13,19 +26,19 @@
     let exam_time = getTime()
     $:  examRecord.exam_time = (new Date(exam_time)).valueOf() / 1000
 
-
+    let promise
 
     function getTime() {
         let date = new Date(examRecord.exam_time * 1000)
         return date.getFullYear()
             + '-'
-            + (date.getMonth() + 1).toString().padStart(2,'0')
+            + (date.getMonth() + 1).toString().padStart(2, '0')
             + '-'
-            + date.getDate().toString().padStart(2,'0')
+            + date.getDate().toString().padStart(2, '0')
             + 'T'
-            + date.getHours().toString().padStart(2,'0')
+            + date.getHours().toString().padStart(2, '0')
             + ':'
-            + date.getMinutes().toString().padStart(2,'0')
+            + date.getMinutes().toString().padStart(2, '0')
     }
 
     async function create() {
@@ -81,19 +94,52 @@ mutation {
         });
         const data = await res.json();
 
-        if (res.status !== 200 || data.errors !== undefined) {
+        if (res.status !== 200) {
             throw data;
+        }
+        if( data.errors !== undefined){
+            throw data.errors[0];
         }
         await cancel()
         await list()
     }
 
+    function clickSubmit() {
+        promise = create();
+    }
 
 </script>
 
 <style>
 </style>
 <div>
+    <label>
+        课程：
+        <select bind:value={examRecord.course_id}>
+            <option value=0 selected>请选择</option>
+
+            {#each courses as v, index}
+                <option value={v.id}>{v.name}</option>
+            {/each}
+        </select>
+    </label>
+    <br/>
+    <label>
+        学生：
+        <select bind:value={examRecord.student_id}>
+            <option value=0 selected>请选择</option>
+            {#each students as v, index}
+                <option value={v.id}>{v.name}</option>
+            {/each}
+        </select>
+    </label>
+    <br/>
+
+    <label>
+        学生：
+        <input type="text" bind:value="{examRecord.student_id}"/>
+    </label>
+    <br/>
     <label>
         考试编号：
         <input type="text" bind:value="{examRecord.key}"/>
@@ -117,5 +163,12 @@ mutation {
         <input type="text" bind:value="{examRecord.code}"/>
     </label>
     <br/>
-    <button on:click={create}>提交</button>
+    <button on:click={clickSubmit}>提交</button>
+    {#await promise}
+        <p style="color: red"></p>
+    {:then promise}
+        <p style="color: red"></p>
+    {:catch promise}
+        <p style="color: red">{promise.message}</p>
+    {/await}
 </div>

@@ -18,6 +18,9 @@
     let oldWhereJson = [
         "first:" + first
     ]
+    let students
+    let courses
+
 
     async function list(e) {
         let whereJson = [
@@ -138,9 +141,72 @@ mutation {
         await list();
     }
 
+    async function getStudents() {
+        const res = await fetch(`http://exam.cn/api/graphql/teacher`, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Authorization': "Bearer " + window.localStorage.getItem("token")
+            },
+            body: JSON.stringify({
+                'variables': null,
+                'operationName': null,
+                'query': `
+query {
+  students {
+    id
+    name
+    key
+  }
+}
+
+                `
+            })
+        });
+        let data = await res.json();
+
+        if (res.status !== 200 || data.errors !== undefined) {
+            throw data;
+        }
+        console.log(data.data.students)
+        return data.data.students
+    }
+
+
+    async function getCourses() {
+        const res = await fetch(`http://exam.cn/api/graphql/teacher`, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Authorization': "Bearer " + window.localStorage.getItem("token")
+            },
+            body: JSON.stringify({
+                'variables': null,
+                'operationName': null,
+                'query': `
+query {
+  courses {
+    id
+    name
+  }
+}
+
+                `
+            })
+        });
+        let data = await res.json();
+
+        if (res.status !== 200 || data.errors !== undefined) {
+            throw data;
+        }
+        console.log(data.data.courses)
+        return data.data.courses
+    }
 
     onMount(async () => {
         await list();
+        students = await getStudents()
+        courses = await getCourses()
     });
 </script>
 <style type="text/css">
@@ -174,7 +240,7 @@ mutation {
             <Modal id="create" name="新增" className="button button-pill button-action button-tiny">
                 <div slot="body">
                     <h1>新增考试记录</h1>
-                    <Details cancel={cancel} list={list}/>
+                    <Details cancel={cancel} list={list} students={students} courses={courses}/>
                 </div>
             </Modal>
             <Modal id="upload" name="导入" className="button button-pill button-action button-tiny">
@@ -227,7 +293,7 @@ mutation {
                         <Modal id="{v.id}_update" name="修改">
                             <div slot="body">
                                 <h1>正在修改编号{v.id}的信息</h1>
-                                <Details examRecord={v} cancel={cancel} list={list}/>
+                                <Details examRecord={v} cancel={cancel} list={list} students={students} courses={courses}/>
                             </div>
                         </Modal>
                     </td>
