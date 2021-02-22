@@ -3,6 +3,7 @@
     import Pagination from '../../components/Pagination.svelte';
     import Modal from '../../components/Modal.svelte';
     import Details from './_details.svelte';
+    import {checkResult} from "../../stores";
 
     let promise;
     let active = 1;
@@ -72,10 +73,7 @@
                 `
             })
         });
-        let data = await res.json();
-        if (res.status !== 200 || data.errors !== undefined) {
-            throw data;
-        }
+        let data = await checkResult(res)
 
         active = todoPage;
         oldWhereJson = whereJson;
@@ -116,11 +114,7 @@ mutation {
                 `
             })
         });
-        let data = await res.json();
-
-        if (res.status !== 200 || data.errors !== undefined) {
-            throw data;
-        }
+        await checkResult(res)
         await cancel()
         await list();
     }

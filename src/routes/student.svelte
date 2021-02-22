@@ -3,6 +3,8 @@
 </svelte:head>
 <script>
 
+    import {checkResult} from "../stores";
+
     let promise;
 
     let key;
@@ -39,12 +41,8 @@
                 `
             })
         });
-        const data = await res.json();
-        if (res.status !== 200 || data.errors !== undefined) {
-            throw data;
-        }
 
-        return data;
+        return await checkResult(res);
     }
 
     function handleClick(e) {

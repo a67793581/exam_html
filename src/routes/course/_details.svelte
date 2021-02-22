@@ -1,4 +1,6 @@
 <script>
+    import {checkResult} from "../../stores";
+
     export let cancel
     export let list
     export let course = {
@@ -37,11 +39,7 @@ mutation {
                 `
             })
         });
-        const data = await res.json();
-
-        if (res.status !== 200 || data.errors !== undefined) {
-            throw data;
-        }
+        await checkResult(res)
         await cancel()
         await list()
     }

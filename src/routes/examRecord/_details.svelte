@@ -1,4 +1,6 @@
 <script>
+
+    import {checkResult} from '../../stores.js';
     export let cancel
     export let list
     export let students = []
@@ -81,14 +83,7 @@ mutation {
                 `
             })
         });
-        const data = await res.json();
-
-        if (res.status !== 200) {
-            throw data;
-        }
-        if (data.errors !== undefined) {
-            throw data.errors[0];
-        }
+        await checkResult(res)
         await cancel()
         await list()
     }

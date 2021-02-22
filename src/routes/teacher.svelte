@@ -8,22 +8,30 @@
     import Courses from './course/_courses.svelte';
     import Section from './../components/Section.svelte';
     import SectionDiv from './../components/SectionDiv.svelte';
+    import { onDestroy } from 'svelte';
 
     import {onMount} from "svelte";
+    import {checkResult, tokenWritable} from "../stores";
 
     let promise;
 
     let key;
-
-    let token = ""
-
-    let use = "examRecords"
-
+    //token变量
+    let token;
+    //绑定token到当前变量
+    const unsubscribe = tokenWritable.subscribe(value => {
+        console.log("刷新token:"+value)
+        token = value;
+    });
+    onDestroy(unsubscribe);
+    //读取本地token
     onMount(async () => {
-        token = window.localStorage.getItem("token");
+        tokenWritable.set(window.localStorage.getItem("token"));
     });
 
-    async function test() {
+    let use = "examRecords";
+
+    async function login() {
         let formData = new FormData();
         formData.append("key", key);
         const res = await fetch(`http://exam.cn/api/teacher/login`, {
@@ -35,20 +43,16 @@
             }
         });
 
-        const data = await res.json();
-
-        if (res.status !== 200 || data.errors !== undefined) {
-            throw data;
-        }
+        const data = await checkResult(res);
 
         window.localStorage.setItem("token", data.token);
-        token = data.token;
+        tokenWritable.set(data.token);
         return data;
     }
 
     function handleClick(e) {
         e.preventDefault();
-        promise = test();
+        promise = login();
         return false
     }
 

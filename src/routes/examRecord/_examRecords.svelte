@@ -4,6 +4,7 @@
     import Modal from '../../components/Modal.svelte';
     import Details from './_details.svelte';
     import Import from './_import.svelte';
+    import {checkResult} from "../../stores";
 
     let promise;
     let active = 1;
@@ -88,10 +89,7 @@
                 `
             })
         });
-        let data = await res.json();
-        if (res.status !== 200 || data.errors !== undefined) {
-            throw data;
-        }
+        let data = await checkResult(res)
 
         active = todoPage;
         oldWhereJson = whereJson;
@@ -132,12 +130,8 @@ mutation {
                 `
             })
         });
-        let data = await res.json();
-
-        if (res.status !== 200 || data.errors !== undefined) {
-            throw data;
-        }
-        await cancel()
+        await checkResult(res)
+        await cancel();
         await list();
     }
 
@@ -163,13 +157,9 @@ query {
                 `
             })
         });
-        let data = await res.json();
-
-        if (res.status !== 200 || data.errors !== undefined) {
-            throw data;
-        }
-        console.log(data.data.students)
-        return data.data.students
+        let data = await checkResult(res);
+        console.log(data.data.students);
+        return data.data.students;
     }
 
 
@@ -194,13 +184,10 @@ query {
                 `
             })
         });
-        let data = await res.json();
+        let data = await checkResult(res);
 
-        if (res.status !== 200 || data.errors !== undefined) {
-            throw data;
-        }
-        console.log(data.data.courses)
-        return data.data.courses
+        console.log(data.data.courses);
+        return data.data.courses;
     }
 
     onMount(async () => {

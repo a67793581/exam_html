@@ -1,9 +1,10 @@
 <script>
-    import {Parser} from 'json2csv'
+    import {Parser} from 'json2csv';
+    import {checkResult} from "../../stores";
 
-    export let cancel
-    export let list
-    let promise
+    export let cancel;
+    export let list;
+    let promise;
 
     function uploadClick(e) {
         promise = upload(e);
@@ -24,15 +25,11 @@
             },
             body: formData
         });
-        let data = await res.json();
         e.target.removeAttribute("disabled");//去掉不可点击
-        e.target.innerHTML = "上传"
-
-        if (res.status !== 200 || data.errors !== undefined) {
-            throw data;
-        }
+        e.target.innerHTML = "上传";
+        await checkResult(res);
         fileField.value = '';
-        await cancel()
+        await cancel();
         await list();
     }
 

@@ -1,8 +1,21 @@
 <script>
 
-    import Modal from '../components/Modal.svelte';
+    import {tokenWritable} from '../stores.js';
+    import {onMount} from "svelte";
+
+
+    let token;
+
+    const unsubscribe = tokenWritable.subscribe(value => {
+        token = value;
+    });
+    console.log(tokenWritable)
+
+    onMount(async () => {
+        tokenWritable.set(window.localStorage.getItem("token"));
+    });
 </script>
 
-<Modal>
-    测试
-</Modal>
+{#if token}
+    {token}
+{/if}
