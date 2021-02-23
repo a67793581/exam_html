@@ -49,6 +49,11 @@
         return data;
     }
 
+    async function Logout() {
+        window.localStorage.removeItem("token");
+        tokenWritable.set("");
+    }
+
     function handleClick(e) {
         e.preventDefault();
         promise = login();
@@ -58,8 +63,8 @@
 </script>
 
 {#if token}
+    <button on:click={Logout}>登出</button>
     <Section>
-
         <SectionDiv id="examRecords" name="考试记录" use="Y">
             <ExamRecords/>
         </SectionDiv>
@@ -77,7 +82,7 @@
             <label>
                 <input type="text" required bind:value={key} placeholder="请输入密码"/>
             </label>
-            <button>登陆</button>
+            <button>登入</button>
         </form>
     </div>
     {#if promise}
@@ -85,11 +90,7 @@
             {#await promise}
                 <p>...加载中</p>
             {:then promise}
-                <ul>
-                    <li>
-                        token：{promise.token}
-                    </li>
-                </ul>
+                <p></p>
             {:catch error}
                 <p style="color: red">{error.message}</p>
             {/await}
