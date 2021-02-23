@@ -48,6 +48,10 @@ mutation {
     }
 
 
+    let promise
+    function clickSubmit() {
+        promise = create();
+    }
 </script>
 
 <style>
@@ -63,5 +67,12 @@ mutation {
         <input type="text" bind:value="{student.name}"/>
     </label>
     <br/>
-    <button on:click={create}>提交</button>
+    <button on:click={clickSubmit}>提交</button>
+    {#await promise}
+        <p style="color: red"></p>
+    {:then promise}
+        <p style="color: red"></p>
+    {:catch promise}
+        <p style="color: red">{promise.message}</p>
+    {/await}
 </div>
