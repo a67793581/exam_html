@@ -85,7 +85,7 @@
                     </li>
                 </ul>
             {:catch error}
-                <p style="color: red">{error.errors[0].message}</p>
+                <p style="color: red">{error.message}</p>
             {/await}
         </div>
     {/if}
