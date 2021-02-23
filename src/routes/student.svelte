@@ -66,7 +66,7 @@
             {:then promise}
                 <ul>
                     <li>
-                        考试编号：{promise.data.examRecord.key}
+                        考试唯一编号：{promise.data.examRecord.key}
                     </li>
                     <li>
                         考试时间：{new Date(promise.data.examRecord.exam_time * 1000).toLocaleString()}

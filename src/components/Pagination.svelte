@@ -11,7 +11,8 @@
     function test() {
         let arr = []
         if (pageCount > 0) {
-            let is_ellipsis = false;
+            let before_is_ellipsis = false;
+            let after_is_ellipsis = false;
             if (active > 1) {
                 arr.push({
                     "pageNumber": active - 1,
@@ -46,13 +47,22 @@
                         "isActive": pageNumber === active,
                     })
                 } else {
-                    if (!is_ellipsis) {
+                    if (!before_is_ellipsis && pageNumber < active) {
                         arr.push({
                             "pageNumber": "ellipsis",
                             "explain": ". . .",
                             "isActive": pageNumber === active,
                         })
-                        is_ellipsis = true;
+                        before_is_ellipsis = true;
+                    }
+
+                    if (!after_is_ellipsis && pageNumber > active) {
+                        arr.push({
+                            "pageNumber": "ellipsis",
+                            "explain": ". . .",
+                            "isActive": pageNumber === active,
+                        })
+                        after_is_ellipsis = true;
                     }
                 }
             }

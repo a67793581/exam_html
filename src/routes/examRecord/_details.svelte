@@ -119,7 +119,7 @@ mutation {
     </label>
     <br/>
     <label>
-        考试编号：
+        考试唯一编号：
         <input type="text" bind:value="{examRecord.key}"/>
     </label>
     <br/>
