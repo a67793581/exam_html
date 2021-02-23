@@ -8,7 +8,6 @@
 
     let promise;
     let active = 1;
-    let todoPage = 1;
     let first = 2;
     let pageCount = 0;
     let pageInfo = {
@@ -23,15 +22,18 @@
     let courses
 
 
-    async function list(e) {
+    async function list(e, todoPage = 1) {
         let whereJson = [
             "first:" + first
         ];
         if (e) {
             todoPage = parseInt(e.target.value);
         }
+        if (todoPage === 0) {
+            todoPage = active
+        }
 
-        if (todoPage === active) {
+        if (todoPage === active && e !== false) {
             whereJson = oldWhereJson
         }
         if (todoPage > active && todoPage <= pageCount) {
@@ -132,7 +134,7 @@ mutation {
         });
         await checkResult(res)
         await cancel();
-        await list();
+        await list(false,1);
     }
 
     async function getStudents() {
@@ -278,7 +280,8 @@ query {
                         <Modal id="{v.id}_update" name="修改">
                             <div slot="body">
                                 <h1>正在修改编号{v.id}的信息</h1>
-                                <Details examRecord={v} cancel={cancel} list={list} students={students} courses={courses}/>
+                                <Details examRecord={v} cancel={cancel} list={list} students={students}
+                                         courses={courses}/>
                             </div>
                         </Modal>
                     </td>

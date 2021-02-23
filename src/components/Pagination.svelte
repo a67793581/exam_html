@@ -3,12 +3,12 @@
     export let active = 0;
     let page;
     $: {
-        if (active) {
-            test()
+        if (pageCount || active) {
+            build()
         }
     }
 
-    function test() {
+    function build() {
         let arr = []
         if (pageCount > 0) {
             let before_is_ellipsis = false;
