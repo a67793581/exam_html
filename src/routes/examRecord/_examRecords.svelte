@@ -29,9 +29,6 @@
         if (e) {
             todoPage = parseInt(e.target.value);
         }
-        if (todoPage === 0) {
-            todoPage = active
-        }
 
         if (todoPage === active && e !== false) {
             whereJson = oldWhereJson
@@ -134,7 +131,7 @@ mutation {
         });
         await checkResult(res)
         await cancel();
-        await list(false,1);
+        await list(false);
     }
 
     async function getStudents() {

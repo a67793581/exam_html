@@ -30,7 +30,7 @@
         await checkResult(res);
         fileField.value = '';
         await cancel();
-        await list(false,1);
+        await list(false);
     }
 
     function downloadClick(e) {

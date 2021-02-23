@@ -7,7 +7,6 @@
 
     let promise;
     let active = 1;
-    let todoPage = 1;
     let first = 2;
     let pageCount = 0;
     let pageInfo = {
@@ -19,7 +18,7 @@
         "first:" + first
     ]
 
-    async function list(e) {
+    async function list(e, todoPage = 1) {
         let whereJson = [
             "first:" + first
         ];
@@ -27,7 +26,7 @@
             todoPage = parseInt(e.target.value);
         }
 
-        if (todoPage === active) {
+        if (todoPage === active && e !== false) {
             whereJson = oldWhereJson
         }
         if (todoPage > active && todoPage <= pageCount) {
@@ -114,7 +113,7 @@ mutation {
         });
         await checkResult(res)
         await cancel()
-        await list()
+        await list(false)
     }
 
 
