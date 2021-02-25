@@ -10,8 +10,8 @@
     let key;
 
     async function test() {
-        // const res = await fetch(`http://exam.cn/api/exam_record/details`, {method: 'GET', mode: 'cors'});
-        const res = await fetch(`http://exam.cn/api/graphql/student`, {
+        // const res = await fetch(`/api/exam_record/details`, {method: 'GET', mode: 'cors'});
+        const res = await fetch(`/api/graphql/student`, {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify({

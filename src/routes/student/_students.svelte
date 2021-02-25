@@ -40,7 +40,7 @@
         }
 
         let where = "(" + whereJson.toString() + ")";
-        const res = await fetch(`http://exam.cn/api/graphql/teacher`, {
+        const res = await fetch(`/api/graphql/teacher`, {
             method: 'POST',
             mode: 'cors',
             headers: {
@@ -93,7 +93,7 @@
     }
 
     async function del(id) {
-        const res = await fetch(`http://exam.cn/api/graphql/teacher`, {
+        const res = await fetch(`/api/graphql/teacher`, {
             method: 'POST',
             mode: 'cors',
             headers: {

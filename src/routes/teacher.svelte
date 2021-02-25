@@ -33,7 +33,7 @@
     async function login() {
         let formData = new FormData();
         formData.append("key", key);
-        const res = await fetch(`http://exam.cn/api/teacher/login`, {
+        const res = await fetch(`/api/teacher/login`, {
             method: 'POST',
             mode: 'cors',
             body: formData,

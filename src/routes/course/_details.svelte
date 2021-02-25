@@ -15,7 +15,7 @@
             method = "update"
             id = `id:${course.id}`
         }
-        const res = await fetch(`http://exam.cn/api/graphql/teacher`, {
+        const res = await fetch(`/api/graphql/teacher`, {
             method: 'POST',
             mode: 'cors',
             headers: {

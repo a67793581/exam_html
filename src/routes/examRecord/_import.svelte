@@ -17,7 +17,7 @@
         let formData = new FormData();
         let fileField = document.getElementById("uploadFile");
         formData.append('uploadFile', fileField.files[0]);
-        const res = await fetch(`http://exam.cn/api/teacher/import`, {
+        const res = await fetch(`/api/teacher/import`, {
             method: 'POST',
             mode: 'cors',
             headers: {
